@@ -48,8 +48,9 @@ export default function WalletConnect({
         return
       }
 
-      // Use WalletConnect v2 provider
-      const { EthereumProvider } = await import('@walletconnect/ethereum-provider')
+      // Use WalletConnect v2 provider. Import defensively to handle CJS/ESM shapes.
+      const wcModule: any = await import('@walletconnect/ethereum-provider')
+      const EthereumProvider = wcModule?.default ?? wcModule?.EthereumProvider ?? wcModule
 
       const provider = await EthereumProvider.init({
         projectId,
@@ -63,8 +64,11 @@ export default function WalletConnect({
       })
 
       // Open QR modal and request accounts
-      await provider.enable()
-      const accounts = (await provider.request({ method: 'eth_requestAccounts' })) as string[]
+      if (typeof provider.enable === 'function') {
+        await provider.enable()
+      }
+
+      const accounts = (await provider.request?.({ method: 'eth_requestAccounts' }) || await provider.requestAccounts?.() || []) as string[]
       if (accounts && accounts.length > 0) {
         onConnect(accounts[0])
         setShowModal(false)
