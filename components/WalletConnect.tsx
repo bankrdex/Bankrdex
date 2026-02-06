@@ -48,18 +48,23 @@ export default function WalletConnect({
         return
       }
 
-      // Dynamic import to avoid SSR issues
-      const { WalletConnectConnector } = await import('@web3-react/walletconnect-connector')
-      const connector = new WalletConnectConnector({
-        rpc: {
+      // Use WalletConnect v2 provider
+      const { EthereumProvider } = await import('@walletconnect/ethereum-provider')
+
+      const provider = await EthereumProvider.init({
+        projectId,
+        chains: [1, 42161, 8453],
+        showQrModal: true,
+        rpcMap: {
           1: process.env.NEXT_PUBLIC_ETHEREUM_RPC || 'https://eth-mainnet.g.alchemy.com/v2/demo',
           42161: process.env.NEXT_PUBLIC_ARBITRUM_RPC || 'https://arb-mainnet.g.alchemy.com/v2/demo',
           8453: process.env.NEXT_PUBLIC_BASE_RPC || 'https://mainnet.base.org',
         },
-        qrcode: true,
       })
 
-      const accounts = await connector.activate() as string[]
+      // Open QR modal and request accounts
+      await provider.enable()
+      const accounts = (await provider.request({ method: 'eth_requestAccounts' })) as string[]
       if (accounts && accounts.length > 0) {
         onConnect(accounts[0])
         setShowModal(false)
