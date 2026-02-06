@@ -1,1 +1,15 @@
-{}
+{
+  "../components/WalletConnect.tsx -> @web3-react/walletconnect-connector": {
+    "id": 3786,
+    "files": [
+      "static/chunks/786.70765566b898481f.js"
+    ]
+  },
+  "../node_modules/@web3-react/walletconnect-connector/dist/walletconnect-connector.esm.js -> @walletconnect/ethereum-provider": {
+    "id": 2810,
+    "files": [
+      "static/chunks/810.f57ea5ccdabb5c32.js",
+      "static/chunks/563.f9564e7628d75238.js"
+    ]
+  }
+}

@@ -18,6 +18,7 @@
     "@uniswap/v3-sdk": "^3.27.0",
     "@web3-react/core": "^8.2.3",
     "@web3-react/injected-connector": "^6.0.7",
+    "@web3-react/walletconnect-connector": "^6.2.13",
     "autoprefixer": "10.4.16",
     "clsx": "2.1.1",
     "ethers": "5.7.2",
